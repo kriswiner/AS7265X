@@ -94,22 +94,36 @@
 #define led_ind_4_mA     0x02
 #define led_ind_8_mA     0x03
 
+#define gain_1x          0x00
+#define gain_4x          0x01
+#define gain_16x         0x02
+#define gain_64x         0x03
+
+#define mode0            0x00 // Mode 0: S, U, V, T, I, H, K, G, C, B, E, A
+#define mode1            0x01 // Mode 1: W, U, R, T, L, H, J, G, F, B, D, A
+#define mode2            0x02 // default, all 18 channels
+#define mode3            0x03 // one shotoperation of mode 2
+
+
 class AS7265X
 {
   public: 
   AS7265X(uint8_t intPin);
-  void init();
+  void init(uint8_t gain, uint8_t mode, uint8_t intTime);
   uint8_t getDevType();
   uint8_t getHWVersion();
   uint16_t getFWMajorVersion();
   uint16_t getFWPatchVersion();
   uint16_t getFWBuildVersion();
+  uint8_t getStatus();
   float getTemperature(uint8_t devNum);
   void configureLed(uint8_t ledIndCurrent, uint8_t ledDrvCurrent, uint8_t devNum);
   void enableIndLed(uint8_t devNum);
   void enableDrvLed(uint8_t devNum);
   void disableIndLed(uint8_t devNum);
   void disableDrvLed(uint8_t devNum);
+  void readCalData(float * destination);
+  void readRawData(int16_t * destination);
   void I2Cscan();
   void i2cm_AS72xx_write(uint8_t virtualReg, uint8_t d);
   uint8_t i2cm_AS72xx_read(uint8_t virtualReg);
