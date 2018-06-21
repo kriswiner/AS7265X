@@ -6,12 +6,122 @@ AS7265X::AS7265X(uint8_t intPin)
   _intPin = intPin;
 }
 
-void AS7265X::init()
+void AS7265X::init(uint8_t gain, uint8_t mode, uint8_t intTime)
 {
      i2cm_AS72xx_write(AS72651_DEV_SEL, 0);
      i2cm_AS72xx_write(AS72651_LED_CONFIG, 0x00 );  // turn off led indication on device 1
+
+     // enable interrupt (bit 6), set gain and mode
+     i2cm_AS72xx_write(AS72651_CONTROL_SETUP, 0x40 | gain << 4 | mode << 2 );
+
+     // set integration time
+     i2cm_AS72xx_write(AS72651_INT_TIME, intTime );
+
 }
 
+uint8_t AS7265X::getStatus()
+{
+
+  uint8_t c = i2cm_AS72xx_read(AS72651_CONTROL_SETUP);
+  return c;
+}
+
+
+void AS7265X::readRawData(int16_t * destination)
+{
+  uint8_t rawData[2];
+
+  // collect R,S,T,U,V, W data
+  i2cm_AS72xx_write(AS72651_DEV_SEL, 0);
+  for(int i = 0; i < 6; i++)
+  {
+    for(int j = 0; j < 2; j++)
+    {
+    rawData[j] = i2cm_AS72xx_read(AS72651_RAW_VALUE_0_H + 2*i + j);
+    }
+
+    destination[i] = (int16_t) ( ((int16_t) rawData[0] << 8) | rawData[1]);
+    
+  }
+
+  // collect J,I,G,H,K, L data
+  i2cm_AS72xx_write(AS72651_DEV_SEL, 1);
+  for(int i = 0; i < 6; i++)
+  {
+    for(int j = 0; j < 2; j++)
+    {
+    rawData[j] = i2cm_AS72xx_read(AS72651_RAW_VALUE_0_H + 2*i + j);
+    }
+        
+    destination[i + 6] = (int16_t) ( ((int16_t) rawData[0] << 8) | rawData[1]);
+    
+  }
+
+  //collect D,C,A,B,E, F data
+  i2cm_AS72xx_write(AS72651_DEV_SEL, 2);
+  for(int i = 0; i < 6; i++)
+  {
+    for(int j = 0; j < 4; j++)
+    {
+    rawData[j] = i2cm_AS72xx_read(AS72651_RAW_VALUE_0_H + 2*i + j);
+    }
+        
+   destination[i + 12] = (int16_t) ( ((int16_t) rawData[0] << 8) | rawData[1]);
+    
+  }
+  
+}
+
+
+void AS7265X::readCalData(float * destination)
+{
+  uint8_t rawData[4];
+
+  // collect R,S,T,U,V, W data
+  i2cm_AS72xx_write(AS72651_DEV_SEL, 0);
+  for(int i = 0; i < 6; i++)
+  {
+    for(int j = 0; j < 4; j++)
+    {
+    rawData[j] = i2cm_AS72xx_read(AS72651_CAL_CHAN0_0 + 4*i + j);
+    }
+
+    uint32_t x = ((uint32_t) rawData[0] << 24) | ((uint32_t) rawData[1] << 16) | ((uint32_t) rawData[2] << 8) | rawData[3];
+    destination[i] = *(float*)&x;
+    
+  }
+
+  // collect J,I,G,H,K, L data
+  i2cm_AS72xx_write(AS72651_DEV_SEL, 1);
+  for(int i = 0; i < 6; i++)
+  {
+    for(int j = 0; j < 4; j++)
+    {
+    rawData[j] = i2cm_AS72xx_read(AS72651_CAL_CHAN0_0 + 4*i + j);
+    }
+        
+    uint32_t x = ((uint32_t) rawData[0] << 24) | ((uint32_t) rawData[1] << 16) | ((uint32_t) rawData[2] << 8) | rawData[3];
+    destination[i + 6] = *(float*)&x;
+    
+  }
+
+  //collect D,C,A,B,E, F data
+  i2cm_AS72xx_write(AS72651_DEV_SEL, 2);
+  for(int i = 0; i < 6; i++)
+  {
+    for(int j = 0; j < 4; j++)
+    {
+    rawData[j] = i2cm_AS72xx_read(AS72651_CAL_CHAN0_0 + 4*i + j);
+    }
+        
+    uint32_t x = ((uint32_t) rawData[0] << 24) | ((uint32_t) rawData[1] << 16) | ((uint32_t) rawData[2] << 8) | rawData[3];
+    destination[i + 12] = *(float*)&x;
+    
+  }
+  
+}
+
+  
 uint8_t AS7265X::getDevType()
 {
   uint8_t c = i2cm_AS72xx_read(AS72651_DEVICE_TYPE);
