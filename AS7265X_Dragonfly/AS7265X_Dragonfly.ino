@@ -36,6 +36,8 @@ void setup() {
   Wire.begin(TWI_PINS_20_21); // set master mode 
   Wire.setClock(400000);      // I2C frequency at 400 kHz 
   delay(1000);
+
+  pinMode(intPin, INPUT); // set up the interrupt pin
   
   AS7265X.I2Cscan();
   Serial.println("I2C scan done");
@@ -82,9 +84,9 @@ void setup() {
 
 void loop() {
 
-//  if(intFlag)
-//  {
-//  intFlag = false;
+  if(intFlag)
+  {
+  intFlag = false;
 
   status = AS7265X.getStatus();
   if(status & 0x02)
@@ -101,17 +103,19 @@ void loop() {
   {
    Serial.print(freq[i]); Serial.print(","); Serial.println(calData[i]);
   }
-/*
+   Serial.println(" ");
+
   for(int i = 0; i < 3; i++)
   {
    Serial.print("Temperature of device "); Serial.print(i); Serial.print (" is "); Serial.print(AS7265X.getTemperature(i), 0); Serial.println(" C");
   }
    Serial.println(" ");
- */
+ 
   AS7265X.enableIndLed(0); delay(10); AS7265X.disableIndLed(0); // blink indicator led
   }
   
   delay(1000);
+  }
   
 }
 
