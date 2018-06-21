@@ -1,4 +1,4 @@
-/* readSPIFlash_LoRaSensorTile.ino
+/* loadSPIFlash_AS7265X_Dragonfly.ino
  *  
 Sketch by Kris Winer January 14, 2018
 
@@ -53,7 +53,6 @@ void setup(void)
   DOSFS.begin();
   delay(1000);
 
-//  file = DOSFS.open("/AS72651.fw", "r"); 
   file = DOSFS.open("/AS7265.2.fw", "r"); 
 
   // Set up LED pin
