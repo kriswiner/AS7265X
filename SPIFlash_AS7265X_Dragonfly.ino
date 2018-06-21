@@ -1,10 +1,10 @@
-/* SPIFlash_Cricket.ino
+/* SPIFlash_AS7265X_Dragonfly.ino
 Sketch by Kris Winer December 16, 2016
 
 License: Use this sketch any way you choose; if you like it, buy me a beer sometime
 
 Purpose: Checks function of a variety of SPI NOR flash memory chips hosted by the STM32L4
-Dragonfly (STM32L476), Butterfly (STM32L433), and Ladybug (STML432) development boards or their variants.
+Dragonfly (STM32L476), Butterfly (STM32L433), and Ladybug (STM32L432) development boards or their variants.
 
 Sketch takes advantage of the SPI.beginTransaction/SPI.EndTransaction protocol for efficiency
 and maximum speed.
@@ -36,7 +36,7 @@ int page_number = 0x01FF;
 unsigned char w_page[256];
 unsigned char r_page[256];
 
-#define CSPIN  10  // 21 for LoRa Sensor Tile
+#define CSPIN  10   
 #define myLed 26
 
 #define STAT_WIP 1
