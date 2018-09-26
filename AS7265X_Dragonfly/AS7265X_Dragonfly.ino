@@ -7,7 +7,9 @@ bool intFlag = false;
 uint8_t MAJOR, PATCH, BUILD, status;
 float    calData[18];
 int16_t rawData[18];
-uint16_t freq[18] = {610, 680, 730, 760, 810, 860, 705, 645, 560, 585, 900, 940, 485, 460, 410, 435, 510, 535};
+//uint16_t freq[18] = {610, 680, 730, 760, 810, 860, 705, 645, 560, 585, 900, 940, 485, 460, 410, 435, 510, 535}; // old data sheet
+uint16_t freq[18] = {610, 680, 730, 760, 810, 860, 560, 585, 645, 705, 900, 940, 410, 435, 460, 485, 510, 535}; // latest data sheet
+
 
 /* choices are: 
  *  ledIndCurrent led_ind_1_mA, led_ind_2_mA, led_ind_4_mA, led_ind_8_mA
@@ -70,12 +72,15 @@ void setup() {
   AS7265X.configureLed(ledIndCurrent0,ledDrvCurrent0, 0);
   AS7265X.disableIndLed(0);
   AS7265X.disableDrvLed(0);
+  delay(100);
   AS7265X.configureLed(ledIndCurrent1,ledDrvCurrent1, 1);
   AS7265X.disableIndLed(1);
   AS7265X.enableDrvLed(1);
+  (delay(100);
   AS7265X.configureLed(ledIndCurrent2,ledDrvCurrent2, 2);
   AS7265X.disableIndLed(2);
   AS7265X.disableDrvLed(2);
+  delay(100);
 
   attachInterrupt(intPin, myIntHandler, FALLING);
   AS7265X.getStatus();
