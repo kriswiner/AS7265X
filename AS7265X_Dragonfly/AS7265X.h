@@ -54,10 +54,10 @@
 #define AS72651_CAL_CHAN4_2         0x26
 #define AS72651_CAL_CHAN4_3         0x27
 
-#define AS72651_CAL_CHAN4_0         0x28
-#define AS72651_CAL_CHAN4_1         0x29
-#define AS72651_CAL_CHAN4_2         0x2A
-#define AS72651_CAL_CHAN4_3         0x2B
+#define AS72651_CAL_CHAN5_0         0x28
+#define AS72651_CAL_CHAN5_1         0x29
+#define AS72651_CAL_CHAN5_2         0x2A
+#define AS72651_CAL_CHAN5_3         0x2B
 
 #define AS72651_FW_CNTRL            0x48
 #define AS72651_FW_BYTE_COUNT_H     0x49
