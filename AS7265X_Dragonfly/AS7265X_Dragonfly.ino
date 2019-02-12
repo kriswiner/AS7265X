@@ -35,7 +35,7 @@ void setup() {
   Serial.begin(115200);
   delay(4000);
  
-  Wire.begin(TWI_PINS_20_21); // set master mode 
+  Wire.begin(); //TWI_PINS_20_21); // set master mode 
   Wire.setClock(400000);      // I2C frequency at 400 kHz 
   delay(1000);
 
@@ -76,7 +76,7 @@ void setup() {
   AS7265X.configureLed(ledIndCurrent1,ledDrvCurrent1, 1);
   AS7265X.disableIndLed(1);
   AS7265X.enableDrvLed(1);
-  (delay(100);
+  delay(100);
   AS7265X.configureLed(ledIndCurrent2,ledDrvCurrent2, 2);
   AS7265X.disableIndLed(2);
   AS7265X.disableDrvLed(2);
