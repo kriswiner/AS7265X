@@ -35,7 +35,7 @@ void setup() {
   Serial.begin(115200);
   delay(4000);
  
-  Wire.begin(TWI_PINS_20_21); // set master mode 
+  Wire.begin(); //TWI_PINS_20_21); // set master mode 
   Wire.setClock(400000);      // I2C frequency at 400 kHz 
   delay(1000);
 
